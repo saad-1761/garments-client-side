@@ -1,0 +1,66 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@theme {
+  /* Night Bordeaux color palette in OKLCH */
+  --color-night-bordeaux-50: oklch(94.5% 0.02 10);
+  --color-night-bordeaux-100: oklch(89.5% 0.04 10);
+  --color-night-bordeaux-200: oklch(79.5% 0.08 10);
+  --color-night-bordeaux-300: oklch(69.5% 0.12 10);
+  --color-night-bordeaux-400: oklch(59.5% 0.16 10);
+  --color-night-bordeaux-500: oklch(50% 0.19 10);
+  --color-night-bordeaux-600: oklch(40% 0.15 10);
+  --color-night-bordeaux-700: oklch(30% 0.11 10);
+  --color-night-bordeaux-800: oklch(21% 0.07 10);
+  --color-night-bordeaux-900: oklch(12% 0.04 10);
+  --color-night-bordeaux-950: oklch(8% 0.03 10);
+}
+
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: oklch(40% 0.15 10); /* night-bordeaux-600 */
+  --color-primary-content: oklch(94.5% 0.02 10); /* night-bordeaux-50 */
+  --color-secondary: oklch(69.5% 0.12 10); /* night-bordeaux-300 */
+  --color-secondary-content: oklch(8% 0.03 10); /* night-bordeaux-950 */
+  --color-accent: oklch(50% 0.19 10); /* night-bordeaux-500 */
+  --color-accent-content: oklch(94.5% 0.02 10); /* night-bordeaux-50 */
+  --color-neutral: oklch(21% 0.07 10); /* night-bordeaux-800 */
+  --color-neutral-content: oklch(89.5% 0.04 10); /* night-bordeaux-100 */
+  --color-base-100: oklch(100% 0 0); /* white */
+  --color-base-200: oklch(94.5% 0.02 10); /* night-bordeaux-50 */
+  --color-base-300: oklch(89.5% 0.04 10); /* night-bordeaux-100 */
+  --color-base-content: oklch(8% 0.03 10); /* night-bordeaux-950 */
+  --color-info: oklch(60% 0.15 240);
+  --color-info-content: oklch(100% 0 0);
+  --color-success: oklch(65% 0.15 160);
+  --color-success-content: oklch(100% 0 0);
+  --color-warning: oklch(75% 0.15 60);
+  --color-warning-content: oklch(100% 0 0);
+  --color-error: oklch(60% 0.2 20);
+  --color-error-content: oklch(100% 0 0);
+}
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  --color-primary: oklch(59.5% 0.16 10); /* night-bordeaux-400 */
+  --color-primary-content: oklch(8% 0.03 10); /* night-bordeaux-950 */
+  --color-secondary: oklch(79.5% 0.08 10); /* night-bordeaux-200 */
+  --color-secondary-content: oklch(12% 0.04 10); /* night-bordeaux-900 */
+  --color-accent: oklch(69.5% 0.12 10); /* night-bordeaux-300 */
+  --color-accent-content: oklch(8% 0.03 10); /* night-bordeaux-950 */
+  --color-neutral: oklch(89.5% 0.04 10); /* night-bordeaux-100 */
+  --color-neutral-content: oklch(12% 0.04 10); /* night-bordeaux-900 */
+  --color-base-100: oklch(8% 0.03 10); /* night-bordeaux-950 */
+  --color-base-200: oklch(12% 0.04 10); /* night-bordeaux-900 */
+  --color-base-300: oklch(21% 0.07 10); /* night-bordeaux-800 */
+  --color-base-content: oklch(94.5% 0.02 10); /* night-bordeaux-50 */
+  --color-info: oklch(70% 0.15 240);
+  --color-info-content: oklch(8% 0.03 10);
+  --color-success: oklch(70% 0.15 160);
+  --color-success-content: oklch(8% 0.03 10);
+  --color-warning: oklch(80% 0.15 60);
+  --color-warning-content: oklch(8% 0.03 10);
+  --color-error: oklch(70% 0.2 20);
+  --color-error-content: oklch(8% 0.03 10);
+}
