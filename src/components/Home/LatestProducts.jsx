@@ -21,7 +21,7 @@ const LatestProducts = () => {
   return (
     <Container>
       <div>
-        <h2 className="text-3xl font-semibold text-center mb-6">
+        <h2 className="text-3xl font-semibold text-center mb-6 text-blue-900 dark:text-blue-100">
           Latest Products
         </h2>
         <p className="text-center text-gray-600">
