@@ -20,6 +20,7 @@ import SellerRoute from "./SellerRoute";
 import AdminRoute from "./AdminRoute";
 import AllProduct from "../pages/AllProduct/AllProduct";
 import About from "../pages/About/About";
+import Contact from "../pages/Contact/Contact";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
       },
       {
         path: "/product/:id",
