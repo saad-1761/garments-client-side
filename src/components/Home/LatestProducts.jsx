@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 
 import LoadingSpinner from "../Shared/LoadingSpinner";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import ProductCardSkeleton from "../Skeleton/ProductCardSkeleton";
 
 const LatestProducts = () => {
   const axiosSecure = useAxiosSecure();
@@ -16,7 +17,17 @@ const LatestProducts = () => {
     },
   });
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) {
+    return (
+      <Container>
+        <div className="pt-12 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <ProductCardSkeleton key={i} />
+          ))}
+        </div>
+      </Container>
+    );
+  }
 
   return (
     <Container>
