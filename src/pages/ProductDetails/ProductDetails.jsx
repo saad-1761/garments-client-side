@@ -2,16 +2,19 @@ import Container from "../../components/Shared/Container";
 import Heading from "../../components/Shared/Heading";
 import Button from "../../components/Shared/Button/Button";
 import PurchaseModal from "../../components/Modal/PurchaseModal";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import ProductDetailsSkeleton from "../../components/Skeleton/ProductDetailsSceleton";
 import { motion } from "framer-motion";
+import { AuthContext } from "../../providers/AuthContext";
 
 const ProductDetails = () => {
   let [isOpen, setIsOpen] = useState(false);
   const { id } = useParams();
+  const { user } = useContext(AuthContext);
+  console.log("User in ProductDetails:", user);
 
   const { data: product = {}, isLoading } = useQuery({
     queryKey: ["product", id],
@@ -29,6 +32,7 @@ const ProductDetails = () => {
   if (isLoading) return <ProductDetailsSkeleton />;
   const { image, name, description, category, quantity, price, seller } =
     product;
+  console.log(seller.email);
   return (
     <Container>
       <motion.div
@@ -88,7 +92,11 @@ const ProductDetails = () => {
                 </p>
 
                 <div className="w-full sm:w-48">
-                  <Button onClick={() => setIsOpen(true)} label="Purchase" />
+                  <Button
+                    onClick={() => setIsOpen(true)}
+                    label="Purchase"
+                    disabled={user?.email == seller?.email ? true : false}
+                  />
                 </div>
               </div>
 

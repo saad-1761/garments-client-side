@@ -7,6 +7,7 @@ const Button = ({ label, onClick, disabled, outline, small, icon: Icon }) => {
     relative w-full
     rounded-xl
     transition-all duration-300
+    cursor-pointer
     disabled:opacity-60 disabled:cursor-not-allowed
     ${small ? "py-2 text-sm" : "py-3 text-base"}
     ${
