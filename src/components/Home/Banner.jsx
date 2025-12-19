@@ -15,23 +15,23 @@ import { NavLink } from "react-router-dom";
 const slides = [
   {
     image: banner1,
-    title: "Smart. Secure. Seamless.",
-    subtitle: "Enterprise-grade solutions powered by modern technology.",
+    title: "Smart Garment Production",
+    subtitle: "Digitally managing every step from cutting to shipment.",
   },
   {
     image: banner2,
-    title: "Built for Performance",
-    subtitle: "Optimized systems designed for scale and reliability.",
+    title: "Built for Factory Performance",
+    subtitle: "Optimized workflows for efficiency, quality, and scale.",
   },
   {
     image: banner3,
-    title: "Bright Ideas. Ocean Depth.",
-    subtitle: "Innovation inspired by clarity, depth, and precision.",
+    title: "Precision in Every Stitch",
+    subtitle: "Data-driven control for quality, compliance, and consistency.",
   },
   {
     image: banner4,
-    title: "Future-Ready Platforms",
-    subtitle: "Designed today for tomorrow’s challenges.",
+    title: "Future-Ready Apparel Systems",
+    subtitle: "Designed to adapt with modern garment manufacturing needs.",
   },
 ];
 
@@ -128,7 +128,7 @@ const Banner = () => {
                           backdrop-blur
                         "
                       >
-                        Get Started
+                        View Products
                       </NavLink>
                     </motion.div>
                   </motion.div>
