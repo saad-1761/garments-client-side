@@ -1,9 +1,7 @@
-import Products from "../../components/Home/Products";
-
 const Home = () => {
   return (
     <div>
-      <Products />
+      This is Home Page
       {/* More components */}
     </div>
   );

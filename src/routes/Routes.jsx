@@ -18,6 +18,7 @@ import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import SellerRequests from "../pages/Dashboard/Admin/SellerRequests";
 import SellerRoute from "./SellerRoute";
 import AdminRoute from "./AdminRoute";
+import AllProduct from "../pages/AllProduct/AllProduct";
 
 export const router = createBrowserRouter([
   {
@@ -30,8 +31,16 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: "/all-products",
+        element: <AllProduct />,
+      },
+      {
         path: "/product/:id",
-        element: <ProductDetails />,
+        element: (
+          <PrivateRoute>
+            <ProductDetails />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/payment-success",

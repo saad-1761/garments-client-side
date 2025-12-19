@@ -1,14 +1,16 @@
 import Card from "./Card";
 import Container from "../Shared/Container";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+
 import LoadingSpinner from "../Shared/LoadingSpinner";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Products = () => {
+  const axiosSecure = useAxiosSecure();
   const { data: products = [], isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
-      const result = await axios(`${import.meta.env.VITE_API_URL}/products`);
+      const result = await axiosSecure(`/products`);
       return result.data;
     },
   });
