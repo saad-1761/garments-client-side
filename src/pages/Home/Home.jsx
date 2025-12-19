@@ -1,9 +1,14 @@
+import Banner from "../../components/Home/Banner";
 import LatestProducts from "../../components/Home/LatestProducts";
+import Container from "../../components/Shared/Container";
 
 const Home = () => {
   return (
     <div>
-      This is Home Page
+      <Container>
+        <Banner />
+      </Container>
+
       <LatestProducts />
       {/* More components */}
     </div>
