@@ -1,6 +1,7 @@
 import Card from "./Card";
 import Container from "../Shared/Container";
 import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 
 import LoadingSpinner from "../Shared/LoadingSpinner";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
@@ -29,11 +30,22 @@ const LatestProducts = () => {
         </p>
       </div>
       {latestProducts && latestProducts.length > 0 ? (
-        <div className="pt-12 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.08,
+              },
+            },
+          }}
+          className="pt-12 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
           {latestProducts.map((latestProduct) => (
             <Card key={latestProduct._id} product={latestProduct} />
           ))}
-        </div>
+        </motion.div>
       ) : null}
     </Container>
   );
