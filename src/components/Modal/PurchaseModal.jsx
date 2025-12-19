@@ -1,6 +1,7 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 const PurchaseModal = ({ closeModal, isOpen, product }) => {
   const { user } = useAuth();
@@ -31,60 +32,82 @@ const PurchaseModal = ({ closeModal, isOpen, product }) => {
   };
 
   return (
-    <Dialog
-      open={isOpen}
-      as="div"
-      className="relative z-10 focus:outline-none "
-      onClose={closeModal}
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div className="flex min-h-full items-center justify-center p-4">
+      <Dialog
+        open={isOpen}
+        as="div"
+        className="relative z-50"
+        onClose={closeModal}
+      >
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
+
+        <div className="fixed inset-0 flex items-center justify-center p-4">
           <DialogPanel
-            transition
-            className="w-full max-w-md bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0 shadow-xl rounded-2xl"
+            className="
+        w-full max-w-md
+        rounded-2xl
+        bg-white/90 dark:bg-slate-900/90
+        backdrop-blur-xl
+        border border-sky-200/40 dark:border-sky-500/20
+        shadow-2xl
+        p-6
+        transition-all
+      "
           >
-            <DialogTitle
-              as="h3"
-              className="text-lg font-medium text-center leading-6 text-gray-900"
-            >
-              Review Info Before Purchase
+            <DialogTitle className="text-lg font-semibold text-center text-slate-800 dark:text-slate-100">
+              Review Before Purchase
             </DialogTitle>
-            <div className="mt-2">
-              <p className="text-sm text-gray-500">Product: {name}</p>
-            </div>
-            <div className="mt-2">
-              <p className="text-sm text-gray-500">Category: {category}</p>
-            </div>
-            <div className="mt-2">
-              <p className="text-sm text-gray-500">
-                Customer: {user?.displayName}
+
+            <div className="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+              <p>
+                <span className="font-medium">Product:</span> {name}
+              </p>
+              <p>
+                <span className="font-medium">Category:</span> {category}
+              </p>
+              <p>
+                <span className="font-medium">Customer:</span>{" "}
+                {user?.displayName}
+              </p>
+              <p className="text-lg font-semibold text-sky-700 dark:text-sky-400">
+                Price: ${price}
               </p>
             </div>
 
-            <div className="mt-2">
-              <p className="text-sm text-gray-500">Price: $ {price}</p>
-            </div>
-
-            <div className="flex mt-2 justify-around">
+            <div className="mt-6 flex gap-3">
               <button
                 onClick={handlePayment}
-                type="button"
-                className="cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
+                className="
+            flex-1 rounded-lg py-2.5 text-sm font-semibold
+            bg-sky-600 hover:bg-sky-700
+            text-white transition
+          "
               >
                 Pay
               </button>
+
               <button
-                type="button"
-                className="cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
                 onClick={closeModal}
+                className="
+            flex-1 rounded-lg py-2.5 text-sm font-semibold
+            bg-slate-200 hover:bg-slate-300
+            dark:bg-slate-700 dark:hover:bg-slate-600
+            text-slate-800 dark:text-slate-200
+            transition
+          "
               >
                 Cancel
               </button>
             </div>
           </DialogPanel>
         </div>
-      </div>
-    </Dialog>
+      </Dialog>
+    </motion.div>
   );
 };
 
