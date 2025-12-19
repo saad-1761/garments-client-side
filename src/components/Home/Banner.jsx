@@ -61,7 +61,7 @@ const Banner = () => {
         effect="fade"
         loop
         autoplay={{ delay: 4500, disableOnInteraction: false }}
-        pagination={{ clickable: true }}
+        // pagination={{ clickable: true }}
         className="h-full"
       >
         {slides.map((slide, index) => (
