@@ -1,82 +1,68 @@
-import SellerOrderDataRow from '../../../components/Dashboard/TableRows/SellerOrderDataRow'
-import useAuth from '../../../hooks/useAuth'
-import { useQuery } from '@tanstack/react-query'
-import LoadingSpinner from '../../../components/Shared/LoadingSpinner'
-import useAxiosSecure from '../../../hooks/useAxiosSecure'
+import SellerOrderDataRow from "../../../components/Dashboard/TableRows/SellerOrderDataRow";
+import { useQuery } from "@tanstack/react-query";
+import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAuth from "../../../hooks/useAuth";
 
 const ManageOrders = () => {
-  const { user } = useAuth()
-  const axiosSecure = useAxiosSecure()
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
   const { data: orders = [], isLoading } = useQuery({
-    queryKey: ['orders', user?.email],
+    queryKey: ["seller-orders"],
     queryFn: async () => {
-      const result = await axiosSecure(`/manage-orders/${user?.email}`)
-      return result.data
+      const res = await axiosSecure(`/manage-orders/${user?.email}`);
+      return res.data;
     },
-  })
+  });
 
-  if (isLoading) return <LoadingSpinner />
+  if (isLoading) return <LoadingSpinner />;
+
   return (
-    <>
-      <div className='container mx-auto px-4 sm:px-8'>
-        <div className='py-8'>
-          <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
-            <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
-              <table className='min-w-full leading-normal'>
-                <thead>
-                  <tr>
+    <div className="container mx-auto px-4 sm:px-8">
+      <div className="py-8">
+        <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+          <div className="inline-block min-w-full rounded-lg overflow-hidden shadow border border-gray-200 dark:border-gray-700">
+            <table className="min-w-full leading-normal">
+              <thead className="bg-gray-100 dark:bg-gray-800">
+                <tr>
+                  {[
+                    "Name",
+                    "Customer",
+                    "Price",
+                    "Quantity",
+                    "Status",
+                    "Action",
+                  ].map((heading, i) => (
                     <th
-                      scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                      key={i}
+                      className="px-5 py-3 border-b border-gray-200 dark:border-gray-700 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider"
                     >
-                      Name
+                      {heading}
                     </th>
-                    <th
-                      scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                    >
-                      Customer
-                    </th>
-                    <th
-                      scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                    >
-                      Price
-                    </th>
-                    <th
-                      scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                    >
-                      Quantity
-                    </th>
-
-                    <th
-                      scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                    >
-                      Status
-                    </th>
-
-                    <th
-                      scope='col'
-                      className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
-                    >
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {orders.map(order => (
-                    <SellerOrderDataRow key={order._id} order={order} />
                   ))}
-                </tbody>
-              </table>
-            </div>
+                </tr>
+              </thead>
+              <tbody className="bg-white dark:bg-gray-900">
+                {orders.map(
+                  (order) => (
+                    console.log(order),
+                    (<SellerOrderDataRow key={order._id} order={order} />)
+                  )
+                )}
+              </tbody>
+            </table>
+
+            {orders.length === 0 && (
+              <p className="text-center py-6 text-gray-500 dark:text-gray-400">
+                No orders found.
+              </p>
+            )}
           </div>
         </div>
       </div>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default ManageOrders
+export default ManageOrders;

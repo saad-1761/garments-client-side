@@ -75,7 +75,9 @@ const AddProductForm = () => {
               {...register("category", { required: true })}
               className="input"
             >
-              <option value="">Select</option>
+              <option value="" disabled>
+                Select
+              </option>
               <option value="Shirt">Shirt</option>
               <option value="Pant">Pant</option>
               <option value="Jacket">Jacket</option>
