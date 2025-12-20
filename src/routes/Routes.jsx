@@ -56,10 +56,11 @@ export const router = createBrowserRouter([
         path: "/payment-success",
         element: <PaymentSuccess />,
       },
+      { path: "/login", element: <Login /> },
+      { path: "/signup", element: <SignUp /> },
     ],
   },
-  { path: "/login", element: <Login /> },
-  { path: "/signup", element: <SignUp /> },
+
   {
     path: "/dashboard",
     element: (

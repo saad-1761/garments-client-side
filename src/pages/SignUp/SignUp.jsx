@@ -43,7 +43,7 @@ const SignUp = () => {
   return (
     <div
       className="flex justify-center items-center min-h-screen py-10 px-4
-      bg-base-200 "
+      bg-base-100 "
     >
       <div
         className="w-full max-w-md rounded-2xl p-8
@@ -52,13 +52,13 @@ const SignUp = () => {
         shadow-xl"
       >
         {/* Back to Home */}
-        <Link
+        {/* <Link
           to="/"
           className="text-sm text-base-content/60
           hover:text-primary transition mb-4 inline-block"
         >
           ← Back to Home
-        </Link>
+        </Link> */}
 
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-base-content">

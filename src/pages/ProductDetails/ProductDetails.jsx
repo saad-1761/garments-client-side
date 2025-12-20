@@ -9,9 +9,11 @@ import axios from "axios";
 import ProductDetailsSkeleton from "../../components/Skeleton/ProductDetailsSceleton";
 import { motion } from "framer-motion";
 import { AuthContext } from "../../providers/AuthContext";
+import useRole from "../../hooks/useRole";
 
 const ProductDetails = () => {
   let [isOpen, setIsOpen] = useState(false);
+  const [role] = useRole();
   const { id } = useParams();
   const { user } = useContext(AuthContext);
   console.log("User in ProductDetails:", user);
@@ -94,8 +96,10 @@ const ProductDetails = () => {
                 <div className="w-full sm:w-48">
                   <Button
                     onClick={() => setIsOpen(true)}
-                    label="Purchase"
-                    disabled={user?.email == seller?.email ? true : false}
+                    label="Order Now"
+                    disabled={
+                      role == "seller" || role == "admin" ? true : false
+                    }
                   />
                 </div>
               </div>

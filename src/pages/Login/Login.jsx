@@ -59,12 +59,12 @@ const Login = () => {
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-base-100 px-4">
       {/* Go Home */}
-      <Link
+      {/* <Link
         to="/"
         className="absolute left-4 top-4 text-sm text-neutral hover:text-primary transition"
       >
         ← Go Home
-      </Link>
+      </Link> */}
 
       <div className="w-full max-w-md rounded-xl bg-base-200 my-4 p-6 shadow-lg sm:p-10">
         <div className="mb-8 text-center">
