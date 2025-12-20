@@ -2,47 +2,14 @@ import { useForm } from "react-hook-form";
 import { imageUpload } from "../../utils";
 import useAuth from "../../hooks/useAuth";
 import { useMutation } from "@tanstack/react-query";
-import LoadingSpinner from "../Shared/LoadingSpinner";
-import ErrorPage from "../../pages/ErrorPage";
 import toast from "react-hot-toast";
 import { TbFidgetSpinner } from "react-icons/tb";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import { NavLink } from "react-router-dom";
 
 const AddProductForm = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  // useMutation hook useCase (POST || PUT || PATCH || DELETE)
-  const {
-    isPending,
-    isError,
-    mutateAsync,
-    reset: mutationReset,
-  } = useMutation({
-    mutationFn: async (payload) => await axiosSecure.post(`/products`, payload),
-    onSuccess: (data) => {
-      console.log(data);
-      // show toast
-      toast.success("Product Added successfully");
-      // navigate to my inventory page
-      mutationReset();
-      // Query key invalidate
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-    onMutate: (payload) => {
-      console.log("I will post this data--->", payload);
-    },
-    onSettled: (data, error) => {
-      console.log("I am from onSettled--->", data);
-      if (error) console.log(error);
-    },
-    retry: 3,
-  });
-
-  // React Hook Form
   const {
     register,
     handleSubmit,
@@ -50,201 +17,148 @@ const AddProductForm = () => {
     reset,
   } = useForm();
 
-  const onSubmit = async (data) => {
-    const { name, description, quantity, price, category, image } = data;
-    const imageFile = image[0];
-
-    try {
-      const imageUrl = await imageUpload(imageFile);
-      const productData = {
-        image: imageUrl,
-        name,
-        description,
-        quantity: Number(quantity),
-        price: Number(price),
-        category,
-        seller: {
-          image: user?.photoURL,
-          name: user?.displayName,
-          email: user?.email,
-        },
-      };
-      // await axios.post(`${import.meta.env.VITE_API_URL}/products`, productData),
-      await mutateAsync(productData);
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: async (payload) => axiosSecure.post("/products", payload),
+    onSuccess: () => {
+      toast.success("Product added successfully");
       reset();
-    } catch (err) {
-      console.log(err);
-    }
+    },
+    onError: () => {
+      toast.error("Failed to add product");
+    },
+  });
+
+  const onSubmit = async (data) => {
+    const imageUrl = await imageUpload(data.image[0]);
+
+    const payload = {
+      image: imageUrl,
+      name: data.name,
+      description: data.description,
+      category: data.category,
+      quantity: Number(data.quantity),
+      price: Number(data.price),
+      minimumOrder: Number(data.minimumOrder),
+      seller: {
+        name: user?.displayName,
+        email: user?.email,
+        image: user?.photoURL,
+      },
+    };
+
+    await mutateAsync(payload);
   };
 
-  if (isPending) return <LoadingSpinner />;
-  if (isError) return <ErrorPage />;
   return (
-    <div className="w-full min-h-[calc(100vh-40px)] flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          <div className="space-y-6">
-            {/* Name */}
-            <div className="space-y-1 text-sm">
-              <label htmlFor="name" className="block text-gray-600">
-                Name
-              </label>
-              <input
-                className="w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white"
-                id="name"
-                type="text"
-                placeholder="Product Name"
-                {...register("name", {
-                  required: "Name is required",
-                  maxLength: {
-                    value: 20,
-                    message: "Name cannot be too long",
-                  },
-                })}
-              />
+    <div className="min-h-screen px-4 py-10 flex justify-center items-center bg-gradient-to-br from-sky-50 to-cyan-100 dark:from-slate-900 dark:to-slate-950">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full max-w-4xl rounded-2xl bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-sky-200/30 dark:border-sky-500/20 shadow-xl p-6 sm:p-8"
+      >
+        <h2 className="text-2xl font-semibold text-sky-700 dark:text-sky-400 mb-6">
+          Add New Product
+        </h2>
 
-              {errors.name && (
-                <p className="text-xs text-red-500 mt-1">
-                  {errors.name.message}
-                </p>
-              )}
-            </div>
-            {/* Category */}
-            <div className="space-y-1 text-sm">
-              <label htmlFor="category" className="block text-gray-600 ">
-                Category
-              </label>
-              <select
-                required
-                className="w-full px-4 py-3 border-lime-300 focus:outline-lime-500 rounded-md bg-white"
-                name="category"
-                {...register("category", { required: "Category is required" })}
-              >
-                <option value="Shirt">Shirt</option>
-                <option value="Jacket">Jacket</option>
-                <option value="Pant">Pant</option>
-                <option value="Accessories">Accessories</option>
-              </select>
-              {errors.category && (
-                <p className="text-xs text-red-500 mt-1">
-                  {errors.category.message}
-                </p>
-              )}
-            </div>
-            {/* Description */}
-            <div className="space-y-1 text-sm">
-              <label htmlFor="description" className="block text-gray-600">
-                Description
-              </label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Name */}
+          <Field label="Product Name" error={errors.name}>
+            <input
+              {...register("name", { required: "Required" })}
+              className="input"
+              placeholder="Premium Cotton Shirt"
+            />
+          </Field>
 
-              <textarea
-                id="description"
-                placeholder="Write product description here..."
-                className="block rounded-md focus:lime-300 w-full h-32 px-4 py-3 text-gray-800  border border-lime-300 bg-white focus:outline-lime-500 "
-                name="description"
-                {...register("description", {
-                  required: "Description is required",
-                })}
-              ></textarea>
-              {errors.description && (
-                <p className="text-xs text-red-500 mt-1">
-                  {errors.description.message}
-                </p>
-              )}
-            </div>
-          </div>
-          <div className="space-y-6 flex flex-col">
-            {/* Price & Quantity */}
-            <div className="flex justify-between gap-2">
-              {/* Price */}
-              <div className="space-y-1 text-sm">
-                <label htmlFor="price" className="block text-gray-600 ">
-                  Price
-                </label>
-                <input
-                  className="w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white"
-                  id="price"
-                  type="number"
-                  placeholder="Price per unit"
-                  {...register("price", {
-                    required: "Price is required",
-                    min: { value: 0, message: "Price must be positive" },
-                  })}
-                />
-                {errors.price && (
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors.price.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Quantity */}
-              <div className="space-y-1 text-sm">
-                <label htmlFor="quantity" className="block text-gray-600">
-                  Quantity
-                </label>
-                <input
-                  className="w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white"
-                  id="quantity"
-                  type="number"
-                  placeholder="Available quantity"
-                  {...register("quantity", {
-                    required: "Quantity is required",
-                    min: { value: 1, message: "Quantity must be at least 1" },
-                  })}
-                />
-                {errors.quantity && (
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors.quantity.message}
-                  </p>
-                )}
-              </div>
-            </div>
-            {/* Image */}
-            <div className=" p-4  w-full  m-auto rounded-lg grow">
-              <div className="file_upload px-5 py-3 relative border-4 border-dotted border-gray-300 rounded-lg">
-                <div className="flex flex-col w-max mx-auto text-center">
-                  <label>
-                    <input
-                      className="text-sm cursor-pointer w-36 hidden"
-                      type="file"
-                      name="image"
-                      id="image"
-                      accept="image/*"
-                      {...register("image", {
-                        required: "Image is required",
-                      })}
-                    />
-                    {errors.image && (
-                      <p className="text-xs text-red-500 mt-1">
-                        {errors.image.message}
-                      </p>
-                    )}
-                    <div className="bg-lime-500 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-lime-500">
-                      Upload
-                    </div>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              to="/dashboard/my-inventory"
-              type="submit"
-              className="w-full cursor-pointer p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-lime-500 "
+          {/* Category */}
+          <Field label="Category" error={errors.category}>
+            <select
+              {...register("category", { required: true })}
+              className="input"
             >
-              {isPending ? (
-                <TbFidgetSpinner className="animate-spin m-auto" />
-              ) : (
-                "Save & Continue"
-              )}
-            </button>
-          </div>
+              <option value="">Select</option>
+              <option value="Shirt">Shirt</option>
+              <option value="Pant">Pant</option>
+              <option value="Jacket">Jacket</option>
+              <option value="Accessories">Accessories</option>
+            </select>
+          </Field>
+
+          {/* Price */}
+          <Field label="Unit Price ($)" error={errors.price}>
+            <input
+              type="number"
+              {...register("price", { required: true, min: 1 })}
+              className="input"
+            />
+          </Field>
+
+          {/* Quantity */}
+          <Field label="Total Quantity" error={errors.quantity}>
+            <input
+              type="number"
+              {...register("quantity", { required: true, min: 1 })}
+              className="input"
+            />
+          </Field>
+
+          {/* Minimum Order */}
+          <Field label="Minimum Order Quantity" error={errors.minimumOrder}>
+            <input
+              type="number"
+              {...register("minimumOrder", {
+                required: "Required",
+                min: { value: 1, message: "Must be at least 1" },
+              })}
+              className="input"
+            />
+          </Field>
+
+          {/* Image */}
+          <Field label="Product Image" error={errors.image}>
+            <input
+              type="file"
+              accept="image/*"
+              {...register("image", { required: true })}
+              className="file-input"
+            />
+          </Field>
         </div>
+
+        {/* Description */}
+        <div className="mt-6">
+          <Field label="Description" error={errors.description}>
+            <textarea
+              {...register("description", { required: true })}
+              rows={4}
+              className="input resize-none"
+            />
+          </Field>
+        </div>
+
+        <button
+          type="submit"
+          disabled={isPending}
+          className="mt-8 w-full rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white py-3 font-medium hover:opacity-90 transition"
+        >
+          {isPending ? (
+            <TbFidgetSpinner className="animate-spin mx-auto" />
+          ) : (
+            "Save Product"
+          )}
+        </button>
       </form>
     </div>
   );
 };
 
 export default AddProductForm;
+
+const Field = ({ label, error, children }) => (
+  <div className="flex flex-col gap-1">
+    <label className="text-sm text-slate-600 dark:text-slate-300">
+      {label}
+    </label>
+    {children}
+    {error && <span className="text-xs text-red-500">{error.message}</span>}
+  </div>
+);

@@ -1,113 +1,177 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
-import { motion } from "framer-motion";
 
 const PurchaseModal = ({ closeModal, isOpen, product }) => {
   const { user } = useAuth();
-  const { _id, name, category, price, description, image, seller } =
-    product || {};
 
-  const handlePayment = async () => {
-    const paymentInfo = {
+  const {
+    _id,
+    name,
+    image,
+    description,
+    category,
+    price,
+    quantity: availableQuantity,
+    minimumOrder = 1,
+    seller,
+  } = product || {};
+
+  const [orderQty, setOrderQty] = useState(minimumOrder);
+  const [paymentMethod, setPaymentMethod] = useState("online");
+  const [loading, setLoading] = useState(false);
+
+  const totalPrice = orderQty * price;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (orderQty < minimumOrder || orderQty > availableQuantity) return;
+
+    const orderPayload = {
       productId: _id,
-      name,
+      productName: name,
       category,
-      price,
-      description,
-      image,
-      quantity: 1,
+      image: image,
+      description: description,
+      unitPrice: price,
+      quantity: orderQty,
+      totalPrice,
+      paymentMethod,
+      paymentStatus: paymentMethod === "online" ? "paid" : "pending",
       seller,
       customer: {
         name: user?.displayName,
         email: user?.email,
         image: user?.photoURL,
       },
+      deliveryAddress: e.target.address.value,
+      contactNumber: e.target.phone.value,
+      notes: e.target.notes.value,
     };
-    const { data } = await axios.post(
-      `${import.meta.env.VITE_API_URL}/create-checkout-session`,
-      paymentInfo
-    );
-    window.location.href = data.url;
+
+    try {
+      setLoading(true);
+
+      if (paymentMethod === "online") {
+        const { data } = await axios.post(
+          `${import.meta.env.VITE_API_URL}/create-checkout-session`,
+          orderPayload
+        );
+        window.location.href = data.url;
+      } else {
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/orders`,
+          orderPayload
+        );
+        closeModal();
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-    >
-      <Dialog
-        open={isOpen}
-        as="div"
-        className="relative z-50"
-        onClose={closeModal}
-      >
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
+    <Dialog open={isOpen} onClose={closeModal} className="relative z-50">
+      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
 
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel
-            className="
-        w-full max-w-md
-        rounded-2xl
-        bg-white/90 dark:bg-slate-900/90
-        backdrop-blur-xl
-        border border-sky-200/40 dark:border-sky-500/20
-        shadow-2xl
-        p-6
-        transition-all
-      "
-          >
-            <DialogTitle className="text-lg font-semibold text-center text-slate-800 dark:text-slate-100">
-              Review Before Purchase
-            </DialogTitle>
+      <div className="fixed inset-0 flex items-center justify-center p-4">
+        <DialogPanel className="w-full max-w-lg rounded-2xl bg-white dark:bg-slate-900 p-6 shadow-xl">
+          <DialogTitle className="text-lg font-semibold mb-4">
+            Order Product
+          </DialogTitle>
 
-            <div className="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-              <p>
-                <span className="font-medium">Product:</span> {name}
-              </p>
-              <p>
-                <span className="font-medium">Category:</span> {category}
-              </p>
-              <p>
-                <span className="font-medium">Customer:</span>{" "}
-                {user?.displayName}
-              </p>
-              <p className="text-lg font-semibold text-sky-700 dark:text-sky-400">
-                Price: ${price}
-              </p>
+          <form onSubmit={handleSubmit} className="space-y-4 text-sm">
+            {/* Read-only fields */}
+            <input value={user?.email} readOnly className="input w-full" />
+            <input value={name} readOnly className="input w-full" />
+            <input value={`$${price}`} readOnly className="input w-full" />
+
+            {/* Quantity */}
+            <input
+              type="number"
+              min={minimumOrder}
+              max={availableQuantity}
+              value={orderQty}
+              onChange={(e) => setOrderQty(Number(e.target.value))}
+              className="input w-full"
+              required
+            />
+
+            {/* Total */}
+            <input
+              value={`Total: $${totalPrice}`}
+              readOnly
+              className="input w-full font-semibold"
+            />
+
+            {/* Contact */}
+            <input
+              name="phone"
+              placeholder="Contact Number"
+              className="input w-full"
+              required
+            />
+
+            <textarea
+              name="address"
+              placeholder="Delivery Address"
+              className="textarea w-full"
+              required
+            />
+
+            <textarea
+              name="notes"
+              placeholder="Additional Instructions (optional)"
+              className="textarea w-full"
+            />
+
+            {/* Payment Method */}
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  checked={paymentMethod === "online"}
+                  onChange={() => setPaymentMethod("online")}
+                />
+                Online Payment
+              </label>
+
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  checked={paymentMethod === "cod"}
+                  onChange={() => setPaymentMethod("cod")}
+                />
+                Cash on Delivery
+              </label>
             </div>
 
-            <div className="mt-6 flex gap-3">
+            {/* Actions */}
+            <div className="flex gap-3 pt-4">
               <button
-                onClick={handlePayment}
-                className="
-            flex-1 rounded-lg py-2.5 text-sm font-semibold
-            bg-sky-600 hover:bg-sky-700
-            text-white transition
-          "
+                type="submit"
+                disabled={loading}
+                className="btn btn-primary flex-1"
               >
-                Pay
+                {paymentMethod === "online"
+                  ? "Proceed to Pay"
+                  : "Confirm Order"}
               </button>
 
               <button
+                type="button"
                 onClick={closeModal}
-                className="
-            flex-1 rounded-lg py-2.5 text-sm font-semibold
-            bg-slate-200 hover:bg-slate-300
-            dark:bg-slate-700 dark:hover:bg-slate-600
-            text-slate-800 dark:text-slate-200
-            transition
-          "
+                className="btn btn-outline flex-1"
               >
                 Cancel
               </button>
             </div>
-          </DialogPanel>
-        </div>
-      </Dialog>
-    </motion.div>
+          </form>
+        </DialogPanel>
+      </div>
+    </Dialog>
   );
 };
 

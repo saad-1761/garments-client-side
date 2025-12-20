@@ -12,11 +12,10 @@ import { AuthContext } from "../../providers/AuthContext";
 import useRole from "../../hooks/useRole";
 
 const ProductDetails = () => {
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [role] = useRole();
   const { id } = useParams();
   const { user } = useContext(AuthContext);
-  console.log("User in ProductDetails:", user);
 
   const { data: product = {}, isLoading } = useQuery({
     queryKey: ["product", id],
@@ -31,10 +30,26 @@ const ProductDetails = () => {
   const closeModal = () => {
     setIsOpen(false);
   };
+
   if (isLoading) return <ProductDetailsSkeleton />;
-  const { image, name, description, category, quantity, price, seller } =
-    product;
-  console.log(seller.email);
+
+  const {
+    image,
+    name,
+    description,
+    category,
+    quantity,
+    price,
+    seller,
+    minimumOrder = 1,
+  } = product;
+
+  /**
+   * ORDER ELIGIBILITY LOGIC
+   */
+  const isOrderDisabled =
+    quantity < minimumOrder || role === "seller" || role === "admin";
+
   return (
     <Container>
       <motion.div
@@ -83,9 +98,22 @@ const ProductDetails = () => {
 
               {/* Quantity */}
               <div className="text-sm sm:text-base text-slate-500 dark:text-slate-400">
-                Quantity: <span className="font-semibold">{quantity}</span>{" "}
-                units left
+                Available Quantity:{" "}
+                <span className="font-semibold">{quantity}</span>
               </div>
+
+              {/* Minimum Order */}
+              <div className="text-sm sm:text-base text-slate-500 dark:text-slate-400">
+                Minimum Order:{" "}
+                <span className="font-semibold">{minimumOrder}</span>
+              </div>
+
+              {/* STOCK WARNING */}
+              {quantity < minimumOrder && (
+                <p className="text-sm font-medium text-red-500">
+                  Not enough stock to meet the minimum order quantity.
+                </p>
+              )}
 
               {/* Price & Action */}
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-4 border-t border-sky-200/30 dark:border-sky-500/20">
@@ -96,14 +124,17 @@ const ProductDetails = () => {
                 <div className="w-full sm:w-48">
                   <Button
                     onClick={() => setIsOpen(true)}
-                    label="Order Now"
-                    disabled={
-                      role == "seller" || role == "admin" ? true : false
+                    label={
+                      quantity < minimumOrder
+                        ? `Minimum order is ${minimumOrder}`
+                        : "Order Now"
                     }
+                    disabled={isOrderDisabled}
                   />
                 </div>
               </div>
 
+              {/* Purchase Modal */}
               <PurchaseModal
                 product={product}
                 closeModal={closeModal}
