@@ -1,4 +1,3 @@
-// /* eslint-disable no-unused-vars */
 // import { NavLink } from "react-router";
 
 // const MenuItem = ({ label, address, icon: Icon, onClick }) => {
@@ -23,6 +22,7 @@
 
 ////////
 
+/* eslint-disable no-unused-vars */
 import { NavLink } from "react-router";
 
 const MenuItem = ({ label, address, icon: Icon, onClick }) => {
