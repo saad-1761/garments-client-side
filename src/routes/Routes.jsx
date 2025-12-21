@@ -73,7 +73,7 @@ export const router = createBrowserRouter([
         index: true,
         element: (
           <PrivateRoute>
-            <Statistics />
+            <Profile />
           </PrivateRoute>
         ),
       },
@@ -117,14 +117,14 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      {
-        path: "profile",
-        element: (
-          <PrivateRoute>
-            <Profile />
-          </PrivateRoute>
-        ),
-      },
+      // {
+      //   path: "profile",
+      //   element: (
+      //     <PrivateRoute>
+      //       <Profile />
+      //     </PrivateRoute>
+      //   ),
+      // },
       {
         path: "my-orders",
         element: (

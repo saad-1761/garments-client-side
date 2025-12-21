@@ -1,5 +1,5 @@
 import Container from "../Container";
-import { AiOutlineMenu } from "react-icons/ai";
+import { AiOutlineBars, AiOutlineMenu } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { NavLink, Link, useLocation } from "react-router";
 import useAuth from "../../../hooks/useAuth";
@@ -84,13 +84,13 @@ const Navbar = () => {
   return (
     <header className="fixed top-0 w-full z-20 bg-base-100/80 backdrop-blur border-b border-base-200">
       <Container>
-        <div className="h-16 flex items-center justify-between">
+        <div className="h-16 flex items-center  justify-between">
           {/* Logo */}
-          <Link to="/">
+          <Link to="/" className=" md:block">
             <img
               src={logo}
               alt="logo"
-              className="w-20 md:w-24 object-contain"
+              className="w-20   md:w-24  object-contain"
             />
           </Link>
 
@@ -123,7 +123,7 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Link to="/profile" className="btn btn-ghost p-1">
+                <Link to="/dashboard" className="btn btn-ghost p-1">
                   <img
                     src={user.photoURL || avatarImg}
                     alt="avatar"
@@ -138,6 +138,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
+
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden p-2 border border-base-300 rounded-full"
@@ -148,8 +149,8 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden mt-3 rounded-xl bg-base-100 shadow-lg border border-base-200 p-4">
-            <div className="flex flex-col gap-4 text-base">
+          <div className="md:hidden  mt-3 rounded-xl bg-base-100 shadow-lg border border-base-200 p-4">
+            <div className="flex flex-col  gap-4 text-base">
               {navLinks}
 
               {/* Theme Toggle */}
@@ -186,7 +187,7 @@ const Navbar = () => {
                 <>
                   <Link
                     onClick={() => setIsOpen(false)}
-                    to="/profile"
+                    to="/dashboard"
                     className="flex items-center gap-2"
                   >
                     <img
