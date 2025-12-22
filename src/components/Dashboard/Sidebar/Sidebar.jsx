@@ -120,7 +120,7 @@ import { GrLogout } from "react-icons/gr";
 import { FcSettings } from "react-icons/fc";
 import MenuItem from "./Menu/MenuItem";
 import AdminMenu from "./Menu/AdminMenu";
-import SellerMenu from "./Menu/SellerMenu";
+import SellerMenu from "./Menu/ManagerMenu";
 import CustomerMenu from "./Menu/CustomerMenu";
 
 const Sidebar = ({ variant = "desktop", onNavigate }) => {

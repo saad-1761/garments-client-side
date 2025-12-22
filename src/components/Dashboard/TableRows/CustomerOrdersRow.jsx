@@ -171,154 +171,88 @@
 
 // export default CustomerOrdersRow;
 /////////
-import { useMemo, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "react-hot-toast";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import DeleteModal from "../../Modal/DeleteModal";
+//
 
-const statusBadge = (s = "") => {
-  const v = s.toLowerCase();
-  if (v === "approved") return "badge-success";
-  if (v === "rejected") return "badge-error";
-  return "badge-warning"; // pending
+const badgeClass = (value, type = "status") => {
+  const v = (value || "").toLowerCase();
+  if (type === "payment") {
+    if (v === "paid") return "badge badge-success badge-outline";
+    if (v === "pending") return "badge badge-warning badge-outline";
+    return "badge badge-ghost";
+  }
+  // orderStatus
+  if (v === "approved") return "badge badge-success badge-outline";
+  if (v === "rejected") return "badge badge-error badge-outline";
+  return "badge badge-warning badge-outline"; // pending
 };
 
-const paymentBadge = (paymentStatus = "", method = "") => {
-  const ps = paymentStatus.toLowerCase();
-  if (ps === "paid") return "badge-success";
-  if ((method || "").toLowerCase() === "cod") return "badge-warning";
-  return "badge-ghost";
-};
-
-const CustomerOrdersRow = ({ order, onView, refetch }) => {
-  const axiosSecure = useAxiosSecure();
-  const [isCancelOpen, setIsCancelOpen] = useState(false);
-
-  const canCancel = useMemo(() => {
-    const os = (order?.orderStatus || "").toLowerCase();
-    const ps = (order?.paymentStatus || "").toLowerCase();
-    return os === "pending" && ps === "pending";
-  }, [order]);
-
-  const cancelMutation = useMutation({
-    mutationFn: async (orderId) => {
-      const res = await axiosSecure.delete(`/orders/${orderId}`);
-      return res.data;
-    },
-    onSuccess: async () => {
-      toast.success("Order cancelled & stock restored");
-      await refetch?.();
-      setIsCancelOpen(false);
-    },
-    onError: (err) => {
-      toast.error(
-        err?.response?.data?.message || err?.message || "Cancel failed"
-      );
-    },
-  });
+const CustomerOrdersRow = ({ order, onView, onCancel }) => {
+  const canCancel =
+    (order?.orderStatus || "").toLowerCase() === "pending" &&
+    (order?.paymentStatus || "").toLowerCase() === "pending";
 
   return (
-    <tr className="text-base-content">
-      {/* Order ID */}
-      <td>
-        <p className="font-mono text-xs sm:text-sm break-all">{order?._id}</p>
-        <p className="text-xs text-base-content/60">
-          {order?.createdAt ? new Date(order.createdAt).toLocaleString() : ""}
-        </p>
+    <tr>
+      <td className="font-mono text-xs sm:text-sm">
+        <span className="opacity-80">{String(order?._id).slice(-10)}</span>
       </td>
 
-      {/* Product */}
       <td>
         <div className="flex items-center gap-3">
           <div className="avatar">
-            <div className="w-10 h-10 rounded-lg ring-1 ring-base-300 bg-base-200 overflow-hidden">
-              <img
-                src={order?.image}
-                alt={order?.productName}
-                className="object-cover w-full h-full"
-                loading="lazy"
-              />
+            <div className="w-10 rounded-xl">
+              <img src={order?.image} alt={order?.productName} />
             </div>
           </div>
           <div className="min-w-0">
-            <p className="font-semibold line-clamp-1">{order?.productName}</p>
-            <p className="text-xs text-base-content/60 line-clamp-1">
+            <p className="font-medium text-base-content truncate">
+              {order?.productName}
+            </p>
+            <p className="text-xs text-base-content/60 truncate">
               {order?.category}
             </p>
           </div>
         </div>
       </td>
 
-      {/* Quantity */}
-      <td className="font-semibold">{order?.quantity ?? "—"}</td>
+      <td className="font-medium">{order?.quantity}</td>
 
-      {/* Status */}
       <td>
-        <span
-          className={`badge badge-outline ${statusBadge(
-            order?.orderStatus
-          )} uppercase`}
-        >
+        <span className={badgeClass(order?.orderStatus, "status")}>
           {order?.orderStatus || "pending"}
         </span>
       </td>
 
-      {/* Payment */}
       <td>
         <div className="flex flex-col gap-1">
-          <span
-            className={`badge badge-outline ${paymentBadge(
-              order?.paymentStatus,
-              order?.paymentMethod
-            )} uppercase`}
-          >
-            {order?.paymentStatus || "pending"}
+          <span className={badgeClass(order?.paymentStatus, "payment")}>
+            {order?.paymentStatus} ({order?.paymentMethod})
           </span>
-          <span className="text-xs text-base-content/60 uppercase">
-            {order?.paymentMethod || "cod"}
+          <span className="text-xs text-base-content/60">
+            ${order?.totalPrice}
           </span>
         </div>
       </td>
 
-      {/* Actions */}
       <td className="text-right">
         <div className="flex justify-end gap-2">
-          <button
-            className="btn btn-sm btn-outline btn-primary"
-            onClick={onView}
-          >
+          <button className="btn btn-sm btn-outline" onClick={onView}>
             View
           </button>
 
-          <button
-            className="btn btn-sm btn-outline btn-error"
-            disabled={!canCancel}
-            title={
-              !canCancel ? "Only pending unpaid orders can be cancelled" : ""
-            }
-            onClick={() => setIsCancelOpen(true)}
-          >
-            Cancel
-          </button>
+          {canCancel ? (
+            <button
+              className="btn btn-sm btn-error btn-outline"
+              onClick={onCancel}
+            >
+              Cancel
+            </button>
+          ) : (
+            <button className="btn btn-sm btn-ghost" disabled>
+              Cancel
+            </button>
+          )}
         </div>
-
-        {/* Cancel Confirm Modal */}
-        <DeleteModal
-          isOpen={isCancelOpen}
-          closeModal={() => setIsCancelOpen(false)}
-          title="Cancel Order?"
-          message={
-            canCancel
-              ? "This will cancel your order and restore product stock."
-              : "This order cannot be cancelled (paid or not pending)."
-          }
-          confirmText="Yes, Cancel"
-          cancelText="No"
-          disabled={!canCancel}
-          isLoading={cancelMutation.isPending}
-          onConfirm={() => cancelMutation.mutate(order?._id)}
-        />
       </td>
     </tr>
   );

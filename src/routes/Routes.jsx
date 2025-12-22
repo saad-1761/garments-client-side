@@ -23,6 +23,9 @@ import About from "../pages/About/About";
 import Contact from "../pages/Contact/Contact";
 import ManageProducts from "../pages/Dashboard/Admin/ManageProducts";
 import AdminManageOrders from "../pages/Dashboard/Admin/AdminManageOrders";
+import SellerManageProducts from "../pages/Dashboard/Seller/SellerManageProducts";
+import PendingOrders from "../pages/Dashboard/Seller/PendingOrders";
+import ApprovedOrders from "../pages/Dashboard/Seller/ApprovedOrders";
 
 export const router = createBrowserRouter([
   {
@@ -89,12 +92,42 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      // {
+      //   path: "my-inventory",
+      //   element: (
+      //     <PrivateRoute>
+      //       <SellerRoute>
+      //         <MyInventory />
+      //       </SellerRoute>
+      //     </PrivateRoute>
+      //   ),
+      // },
       {
-        path: "my-inventory",
+        path: "manage-products",
         element: (
           <PrivateRoute>
             <SellerRoute>
-              <MyInventory />
+              <SellerManageProducts />
+            </SellerRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "pending-orders",
+        element: (
+          <PrivateRoute>
+            <SellerRoute>
+              <PendingOrders />
+            </SellerRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "approved-orders",
+        element: (
+          <PrivateRoute>
+            <SellerRoute>
+              <ApprovedOrders />
             </SellerRoute>
           </PrivateRoute>
         ),
@@ -155,16 +188,16 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      {
-        path: "manage-orders",
-        element: (
-          <PrivateRoute>
-            <SellerRoute>
-              <ManageOrders />
-            </SellerRoute>
-          </PrivateRoute>
-        ),
-      },
+      // {
+      //   path: "manage-orders",
+      //   element: (
+      //     <PrivateRoute>
+      //       <SellerRoute>
+      //         <ManageOrders />
+      //       </SellerRoute>
+      //     </PrivateRoute>
+      //   ),
+      // },
     ],
   },
 ]);
