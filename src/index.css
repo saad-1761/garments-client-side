@@ -90,12 +90,12 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --daisyui-theme: bright-ocean-glass-dark;
+    --daisyui-theme: "dark";
   }
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    --daisyui-theme: bright-ocean-glass;
+    --daisyui-theme: "light";
   }
 }
