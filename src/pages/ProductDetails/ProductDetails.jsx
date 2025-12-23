@@ -45,6 +45,7 @@ const ProductDetails = () => {
     seller,
     minimumOrder = 1,
     paymentOption, // "cod" | "payfirst"
+    demoVideoLink, // ✅ added
   } = product || {};
 
   // ✅ Build gallery safely (supports new + old db)
@@ -77,6 +78,39 @@ const ProductDetails = () => {
       ? "Pay First (Online)"
       : "Online / COD";
 
+  // ✅ Demo video helpers (render only when link exists)
+  const demoUrl = useMemo(() => {
+    const raw = (demoVideoLink || "").trim();
+    if (!raw) return "";
+
+    // YouTube: watch?v= -> embed/
+    if (raw.includes("youtube.com/watch")) {
+      const u = new URL(raw);
+      const v = u.searchParams.get("v");
+      return v ? `https://www.youtube.com/embed/${v}` : raw;
+    }
+
+    // YouTube short: youtu.be/ -> embed/
+    if (raw.includes("youtu.be/")) {
+      const id = raw.split("youtu.be/")[1]?.split(/[?&]/)[0];
+      return id ? `https://www.youtube.com/embed/${id}` : raw;
+    }
+
+    // YouTube embed already
+    if (raw.includes("youtube.com/embed/")) return raw;
+
+    // Vimeo: vimeo.com/{id} -> player embed
+    if (raw.includes("vimeo.com/")) {
+      const id = raw.split("vimeo.com/")[1]?.split(/[?&]/)[0];
+      return id ? `https://player.vimeo.com/video/${id}` : raw;
+    }
+
+    // Fallback: try using link directly in iframe (works for many providers)
+    return raw;
+  }, [demoVideoLink]);
+
+  const hasDemo = !!demoUrl;
+
   if (isLoading) return <ProductDetailsSkeleton />;
 
   return (
@@ -87,6 +121,7 @@ const ProductDetails = () => {
         transition={{ duration: 0.35, ease: "easeOut" }}
       >
         <div className="mx-auto w-full max-w-7xl px-4 py-6">
+          {/* Main Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             {/* Images */}
             <div className="w-full">
@@ -207,6 +242,82 @@ const ProductDetails = () => {
               />
             </div>
           </div>
+
+          {/* ✅ Demo Video Section (BOTTOM) */}
+          {hasDemo && (
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: "easeOut", delay: 0.05 }}
+              className="mt-10"
+            >
+              <div className="rounded-2xl border border-base-200 bg-base-100/70 backdrop-blur shadow-sm overflow-hidden">
+                <div className="p-4 sm:p-6">
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-semibold text-base-content">
+                      Live Product Demo
+                    </h3>
+                    <p className="mt-1 text-sm text-base-content/70">
+                      Get a better view of the product live before ordering.
+                    </p>
+                  </div>
+
+                  {/* Responsive: column on small, 2 columns on md+ */}
+                  <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 items-stretch">
+                    {/* Left: Video Preview */}
+                    <div className="rounded-2xl border border-base-200 bg-base-200/40 overflow-hidden">
+                      <div className="relative w-full aspect-video">
+                        <iframe
+                          className="absolute inset-0 w-full h-full"
+                          src={demoUrl}
+                          title="Product demo preview"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      </div>
+                    </div>
+
+                    {/* Right: Text + Watch Now */}
+                    <div className="rounded-2xl border border-base-200 bg-base-200/40 p-5 sm:p-6 flex flex-col justify-center">
+                      <p className="text-base sm:text-lg font-semibold text-base-content">
+                        Watch now
+                      </p>
+                      <p className="mt-2 text-sm sm:text-base text-base-content/70 leading-relaxed">
+                        Get a better view of the product live — check the
+                        material, fit, and details before placing your order.
+                      </p>
+
+                      <div className="mt-5 flex flex-col sm:flex-row gap-3">
+                        <a
+                          href={demoVideoLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="btn btn-primary"
+                        >
+                          Watch Now
+                        </a>
+
+                        <button
+                          type="button"
+                          className="btn btn-outline"
+                          onClick={() =>
+                            window.scrollTo({ top: 0, behavior: "smooth" })
+                          }
+                        >
+                          Back to Top
+                        </button>
+                      </div>
+
+                      <p className="mt-4 text-xs text-base-content/60">
+                        Tip: Open the video in a new tab for full-screen
+                        playback.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
         </div>
       </motion.div>
     </Container>

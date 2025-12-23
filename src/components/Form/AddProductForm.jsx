@@ -224,7 +224,7 @@ const AddProductForm = () => {
               </Field>
 
               {/* show on home */}
-              <label className="flex items-center gap-3 cursor-pointer">
+              {/* <label className="flex items-center gap-3 cursor-pointer">
                 <input
                   type="checkbox"
                   className="toggle toggle-primary"
@@ -233,7 +233,7 @@ const AddProductForm = () => {
                 <span className="text-sm text-base-content/80">
                   Show on Home Page (default: false)
                 </span>
-              </label>
+              </label> */}
 
               <button
                 type="submit"
