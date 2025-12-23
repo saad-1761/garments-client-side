@@ -11,7 +11,8 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = location.state || "/";
+  //const from = location.state || "/";
+  const from = location.state?.from?.pathname || "/";
 
   if (loading) return <LoadingSpinner />;
   if (user) return <Navigate to={from} replace={true} />;
@@ -58,14 +59,6 @@ const Login = () => {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-base-100 px-4">
-      {/* Go Home */}
-      {/* <Link
-        to="/"
-        className="absolute left-4 top-4 text-sm text-neutral hover:text-primary transition"
-      >
-        ← Go Home
-      </Link> */}
-
       <div className="w-full max-w-md rounded-xl bg-base-200 my-4 p-6 shadow-lg sm:p-10">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-base-content">Log In</h1>
@@ -144,7 +137,7 @@ const Login = () => {
             to="/signup"
             className="font-medium text-primary hover:underline"
           >
-            Sign up
+            Register
           </Link>
         </p>
       </div>
