@@ -8,12 +8,9 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import AddProduct from "../pages/Dashboard/Seller/AddProduct";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 import Profile from "../pages/Dashboard/Common/Profile";
-import Statistics from "../pages/Dashboard/Common/Statistics";
 import MainLayout from "../layouts/MainLayout";
-import MyInventory from "../pages/Dashboard/Seller/MyInventory";
-import ManageOrders from "../pages/Dashboard/Seller/ManageOrders";
 import MyOrders from "../pages/Dashboard/Customer/MyOrders";
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter } from "react-router-dom";
 import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import SellerRequests from "../pages/Dashboard/Admin/SellerRequests";
 import SellerRoute from "./SellerRoute";
@@ -92,16 +89,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      // {
-      //   path: "my-inventory",
-      //   element: (
-      //     <PrivateRoute>
-      //       <SellerRoute>
-      //         <MyInventory />
-      //       </SellerRoute>
-      //     </PrivateRoute>
-      //   ),
-      // },
+
       {
         path: "manage-products",
         element: (
@@ -172,14 +160,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      // {
-      //   path: "profile",
-      //   element: (
-      //     <PrivateRoute>
-      //       <Profile />
-      //     </PrivateRoute>
-      //   ),
-      // },
+
       {
         path: "my-orders",
         element: (
@@ -188,16 +169,6 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      // {
-      //   path: "manage-orders",
-      //   element: (
-      //     <PrivateRoute>
-      //       <SellerRoute>
-      //         <ManageOrders />
-      //       </SellerRoute>
-      //     </PrivateRoute>
-      //   ),
-      // },
     ],
   },
 ]);

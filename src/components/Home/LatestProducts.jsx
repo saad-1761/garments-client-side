@@ -1,9 +1,9 @@
+/* eslint-disable no-unused-vars */
+
 import Card from "./Card";
 import Container from "../Shared/Container";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-
-import LoadingSpinner from "../Shared/LoadingSpinner";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import ProductCardSkeleton from "../Skeleton/ProductCardSkeleton";
 

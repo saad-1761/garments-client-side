@@ -17,52 +17,39 @@ const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+
+  // ✅ only for first-time auth state hydration
   const [loading, setLoading] = useState(true);
 
-  const createUser = (email, password) => {
-    setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password);
-  };
+  // ✅ do NOT toggle global loading here
+  const createUser = (email, password) =>
+    createUserWithEmailAndPassword(auth, email, password);
 
-  const signIn = (email, password) => {
-    setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password);
-  };
+  const signIn = (email, password) =>
+    signInWithEmailAndPassword(auth, email, password);
 
-  const signInWithGoogle = () => {
-    setLoading(true);
-    return signInWithPopup(auth, googleProvider);
-  };
+  const signInWithGoogle = () => signInWithPopup(auth, googleProvider);
 
-  const logOut = async () => {
-    setLoading(true);
-    return signOut(auth);
-  };
+  const logOut = () => signOut(auth);
 
-  const updateUserProfile = (name, photo) => {
-    return updateProfile(auth.currentUser, {
+  const updateUserProfile = (name, photo) =>
+    updateProfile(auth.currentUser, {
       displayName: name,
       photoURL: photo,
     });
-  };
 
-  // onAuthStateChange
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      console.log("CurrentUser-->", currentUser?.email);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setLoading(false);
+      setLoading(false); // ✅ only here
     });
-    return () => {
-      return unsubscribe();
-    };
+    return unsubscribe;
   }, []);
 
   const authInfo = {
     user,
     setUser,
     loading,
-    setLoading,
     createUser,
     signIn,
     signInWithGoogle,

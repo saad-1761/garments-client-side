@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import { motion } from "framer-motion";
 import { FaUserCheck, FaTshirt, FaBoxes, FaCreditCard } from "react-icons/fa";
 

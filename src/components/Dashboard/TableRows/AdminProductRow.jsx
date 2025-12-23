@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import { useMemo, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";

@@ -1,43 +1,3 @@
-// import { useState } from 'react'
-// import UpdateUserRoleModal from '../../Modal/UpdateUserRoleModal'
-
-// const UserDataRow = ({ user, refetch }) => {
-//   let [isOpen, setIsOpen] = useState(false)
-//   const closeModal = () => setIsOpen(false)
-//   return (
-//     <tr>
-//       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-//         <p className='text-gray-900 '>{user?.email}</p>
-//       </td>
-//       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-//         <p className='text-gray-900 '>{user?.role}</p>
-//       </td>
-
-//       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-//         <span
-//           onClick={() => setIsOpen(true)}
-//           className='relative cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight'
-//         >
-//           <span
-//             aria-hidden='true'
-//             className='absolute inset-0 bg-green-200 opacity-50 rounded-full'
-//           ></span>
-//           <span className='relative'>Update Role</span>
-//         </span>
-//         {/* Modal */}
-//         <UpdateUserRoleModal
-//           user={user}
-//           refetch={refetch}
-//           isOpen={isOpen}
-//           closeModal={closeModal}
-//         />
-//       </td>
-//     </tr>
-//   )
-// }
-
-// export default UserDataRow
-
 import { useState } from "react";
 import UpdateUserRoleModal from "../../Modal/UpdateUserRoleModal";
 
@@ -57,14 +17,6 @@ const UserDataRow = ({ user, refetch }) => {
     <tr className="hover:bg-base-200/30 transition">
       <td className="whitespace-nowrap">
         <div className="flex items-center gap-3">
-          {/* small avatar fallback (optional) */}
-          {/* <div className="avatar placeholder">
-            <div className="bg-base-200 text-base-content/70 rounded-full w-9">
-              <span className="text-xs font-semibold">
-                {(user?.email?.[0] || "U").toUpperCase()}
-              </span>
-            </div>
-          </div> */}
           <div className="avatar">
             <div className="w-9 h-9 rounded-full ring-1 ring-base-300 bg-base-200 overflow-hidden">
               {user?.image ? (

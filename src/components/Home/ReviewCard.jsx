@@ -23,22 +23,6 @@ const ReviewCard = ({ review }) => {
       {/* Review Text */}
       <p className="text-sm text-base-content/80 mb-3 italic">"{reviewText}"</p>
 
-      {/* Rating */}
-      {/* <div className="flex items-center gap-1">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <FaStar
-            key={i}
-            className={`text-sm ${
-              i < Math.round(ratings)
-                ? "text-transparent bg-clip-text bg-gradient-to-r from-lime-400 via-cyan-400 to-blue-500"
-                : "text-base-300"
-            }`}
-          />
-        ))}
-        <span className="ml-2 text-sm font-medium text-base-content/70">
-          {ratings.toFixed(1)}
-        </span>
-      </div> */}
       <div className="flex items-center gap-1">
         {Array.from({ length: 5 }).map((_, i) => (
           <FaStar
