@@ -217,7 +217,7 @@ const OrderDetailsModal = ({ isOpen, closeModal, order, userLabel }) => {
         </div>
 
         {/* Tracking / History */}
-        <div className="mt-4 card bg-base-100 border border-base-300 shadow-sm">
+        {/* <div className="mt-4 card bg-base-100 border border-base-300 shadow-sm">
           <div className="card-body">
             <div className="flex items-center justify-between">
               <p className="font-semibold">Tracking History</p>
@@ -255,7 +255,7 @@ const OrderDetailsModal = ({ isOpen, closeModal, order, userLabel }) => {
               </li>
             </ul>
           </div>
-        </div>
+        </div> */}
 
         <div className="modal-action">
           <button className="btn btn-ghost" type="button" onClick={closeModal}>
