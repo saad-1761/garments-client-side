@@ -48,6 +48,18 @@ const ProductDetails = () => {
     demoVideoLink, // ✅ added
   } = product || {};
 
+  // 🔥 Dynamic tab title based on product name
+  useEffect(() => {
+    if (!name) return;
+
+    const previousTitle = document.title;
+    document.title = `${name} | Fabrica`;
+
+    return () => {
+      document.title = previousTitle;
+    };
+  }, [name]);
+
   // ✅ Build gallery safely (supports new + old db)
   const gallery = useMemo(() => {
     const arr = Array.isArray(images) ? images.filter(Boolean) : [];

@@ -1,5 +1,6 @@
 import { BsFingerprint } from "react-icons/bs";
 import { GrUserAdmin } from "react-icons/gr";
+import { MdOutlineTrackChanges } from "react-icons/md";
 import MenuItem from "./MenuItem";
 import { useState } from "react";
 import BecomeSellerModal from "../../../Modal/BecomeSellerModal";
@@ -21,6 +22,13 @@ const CustomerMenu = ({ onNavigate }) => {
         icon={BsFingerprint}
         label="My Orders"
         address="my-orders"
+        onClick={onNavigate}
+      />
+
+      <MenuItem
+        icon={MdOutlineTrackChanges}
+        label="Track Orders"
+        address="track-order"
         onClick={onNavigate}
       />
 

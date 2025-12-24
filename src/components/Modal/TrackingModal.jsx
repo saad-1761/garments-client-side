@@ -54,7 +54,7 @@ const TrackingModal = ({ isOpen, closeModal, order, onSuccess }) => {
           className="mt-4 space-y-3"
           onSubmit={handleSubmit((data) => mutation.mutate(data))}
         >
-          <label className="form-control w-full">
+          <label className="form-control w-full flex flex-col">
             <div className="label">
               <span className="label-text">Status</span>
             </div>
@@ -70,7 +70,7 @@ const TrackingModal = ({ isOpen, closeModal, order, onSuccess }) => {
             </select>
           </label>
 
-          <label className="form-control w-full">
+          <label className="form-control w-full flex flex-col">
             <div className="label">
               <span className="label-text">Location</span>
             </div>
@@ -81,7 +81,7 @@ const TrackingModal = ({ isOpen, closeModal, order, onSuccess }) => {
             />
           </label>
 
-          <label className="form-control w-full">
+          <label className="form-control w-full flex flex-col">
             <div className="label">
               <span className="label-text">Note</span>
             </div>

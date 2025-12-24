@@ -38,7 +38,7 @@ const Card = ({ product }) => {
       initial="hidden"
       animate="visible"
       whileHover={{ y: -6 }}
-      className="h-full"
+      className="h-full border-1 border-gray-300 rounded-2xl"
     >
       <div
         className="

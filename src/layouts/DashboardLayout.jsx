@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Sidebar from "../components/Dashboard/Sidebar/Sidebar";
 import Navbar from "../components/Shared/Navbar/Navbar";
 import Footer from "../components/Shared/Footer/Footer";
+import TitleManager from "../components/Shared/TitleManager";
 
 const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -18,6 +19,9 @@ const DashboardLayout = () => {
 
   return (
     <div className="min-h-screen bg-base-100 text-base-content">
+      {/* ✅ dynamic tab title */}
+      <TitleManager />
+
       {/* Top Navbar */}
       <Navbar onOpenSidebar={() => setSidebarOpen(true)} />
 
@@ -78,7 +82,7 @@ const DashboardLayout = () => {
         </div>
       </div>
 
-      {/* Small animation keyframes (Tailwind arbitrary) */}
+      {/* Small animation keyframes */}
       <style>
         {`
           @keyframes fadeIn {
