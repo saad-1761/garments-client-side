@@ -60,7 +60,7 @@ Frontend application for **Fabrica**, a role-based garment marketplace where use
 
 ## 🚀 Live Demo
 
-👉 **Frontend URL:** [Fabrica](https://garments-client-side.vercel.app/)
+👉 **Frontend URL:** [Fabrica](https://lafabrica61.vercel.app/)
 
 ---
 
