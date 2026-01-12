@@ -77,7 +77,7 @@ const ProductDetails = () => {
 
   const closeModal = () => setIsOpen(false);
 
-  const isOrderDisabled =
+  const isOrderDisabled = !user ||
     quantity < minimumOrder ||
     role === "seller" ||
     role === "admin" ||

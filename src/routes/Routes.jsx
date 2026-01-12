@@ -220,6 +220,14 @@ import PendingOrders from "../pages/Dashboard/Seller/PendingOrders";
 import ApprovedOrders from "../pages/Dashboard/Seller/ApprovedOrders";
 import TrackOrders from "../pages/Dashboard/Customer/TrackOrders";
 import TrackOrder from "../pages/Dashboard/Customer/TrackOrder";
+import Statistics from "../pages/Dashboard/Common/Statistics";
+import TermsOfService from "../pages/Policy/TermsOfService";
+import CookiePolicy from "../pages/Policy/CookiePolicy";
+import PrivacyPolicy from "../pages/Policy/PrivacyPolicy";
+import SecurePayments from "../pages/Info/SecurePayments";
+import ProductionTracking from "../pages/Info/ProductionTracking";
+import VerifiedSellers from "../pages/Info/VerifiedSellers";
+import BulkGarmentOrders from "../pages/Info/BulkGarmentOrders";
 
 export const router = createBrowserRouter([
   {
@@ -239,9 +247,9 @@ export const router = createBrowserRouter([
       {
         path: "/product/:id",
         element: (
-          <PrivateRoute>
+          //<PrivateRoute>
             <ProductDetails />
-          </PrivateRoute>
+          //</PrivateRoute>
         ),
         handle: { title: "Product Details" },
       },
@@ -252,6 +260,41 @@ export const router = createBrowserRouter([
       },
       { path: "/login", element: <Login />, handle: { title: "Login" } },
       { path: "/signup", element: <SignUp />, handle: { title: "Sign Up" } },
+      {
+  path: "/terms",
+  element: <TermsOfService />,
+  handle: {title:"Terms"}
+},
+{
+  path: "/privacy",
+  element: <PrivacyPolicy />,
+handle:{title:"Privacy Policy"}
+},
+{
+  path: "/cookies",
+  element: <CookiePolicy />,
+  handle:{title:"Cookie Policy"}
+},
+{
+  path: "/bulk-garment-orders",
+  element: <BulkGarmentOrders />,
+  handle:{title:"Bulk Order"}
+},
+{
+  path: "/verified-sellers",
+  element: <VerifiedSellers />,
+  handle:{title:"Verified Sellers"}
+},
+{
+  path: "/production-tracking",
+  element: <ProductionTracking />,
+  handle:{title:"Production Tracking"}
+},
+{
+  path: "/secure-payments",
+  element: <SecurePayments />,
+  handle:{title:"Secure Payments"}
+},
     ],
   },
 
@@ -273,7 +316,14 @@ export const router = createBrowserRouter([
         ),
         handle: { title: "My Profile" },
       },
-
+      {
+       path: "statistics",
+       element: (
+    <PrivateRoute>
+      <Statistics />
+    </PrivateRoute>
+  ),
+},
       {
         path: "add-product",
         element: (

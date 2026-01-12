@@ -50,10 +50,38 @@ const Footer = () => {
               Services
             </h6>
             <ul className="space-y-2 text-sm text-base-content/70">
-              <li>Bulk Garment Orders</li>
-              <li>Verified Sellers</li>
-              <li>Production Tracking</li>
-              <li>Secure Payments</li>
+              <li>
+                <Link
+                to="/bulk-garment-orders"
+                className="hover:text-primary transition"
+                >
+                  Bulk Garment Orders
+                </Link>
+                </li>
+              <li>
+                <Link
+                to="/verified-sellers"
+                className="hover:text-primary transition"
+                >
+                  Verified Sellers
+                </Link>
+                </li>
+              <li>
+                <Link
+                to="/production-tracking"
+                className="hover:text-primary transition"
+                >
+                  Production Tracking
+                </Link>
+                </li>
+              <li>
+                <Link
+                to="/secure-payments"
+                className="hover:text-primary transition"
+                >
+                  Secure Payments
+                </Link>
+                </li>
             </ul>
           </div>
 
@@ -90,9 +118,31 @@ const Footer = () => {
               Legal
             </h6>
             <ul className="space-y-2 text-sm text-base-content/70">
-              <li>Terms of Service</li>
-              <li>Privacy Policy</li>
-              <li>Cookie Policy</li>
+              <li>
+                <Link
+                to="/terms"
+                className="hover:text-primary transition"
+                >
+                  Terms of Service
+                </Link>
+                </li>
+              <li>
+                <Link
+                to="/privacy"
+                className="hover:text-primary transition"
+                >
+                  Privacy Policy
+                </Link>
+                </li>
+              <li>
+                <Link
+                to="/cookies"
+                className="hover:text-primary transition"
+                >
+                  Cookie Policy
+                </Link>
+                </li>
+
             </ul>
           </div>
         </div>

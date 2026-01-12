@@ -2,7 +2,7 @@ import Container from "../Container";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiOutlineMenu } from "react-icons/ai";
 import { useEffect, useState } from "react";
-import { NavLink, Link, useLocation } from "react-router";
+import { NavLink, Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import avatarImg from "../../../assets/images/placeholder.jpg";
 import logo from "../../../assets/images/logo-flat.png";
@@ -12,6 +12,17 @@ const Navbar = ({ onOpenSidebar }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const location = useLocation();
+  
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      navigate("/login", { replace: true }); // 👈 redirect to login
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -78,7 +89,7 @@ const Navbar = ({ onOpenSidebar }) => {
   );
 
   return (
-    <header className="fixed top-0 w-full z-40 bg-base-100/80 backdrop-blur border-b border-base-200">
+    <header className="fixed top-0 w-full z-40 bg-base-100/80 backdrop-blur border-b border-secondary">
       <Container>
         <div className="h-16 flex items-center justify-between">
           {/* LEFT: Drawer button (mobile/tablet) + Logo */}
@@ -143,7 +154,7 @@ const Navbar = ({ onOpenSidebar }) => {
                   />
                 </Link>
                 <button
-                  onClick={logOut}
+                  onClick={handleLogout}
                   className="btn btn-sm btn-outline btn-primary"
                 >
                   Logout
@@ -213,7 +224,7 @@ const Navbar = ({ onOpenSidebar }) => {
                   </Link>
                   <button
                     onClick={() => {
-                      logOut();
+                      handleLogout();
                       setIsOpen(false);
                     }}
                     className="btn btn-sm btn-outline btn-primary"
